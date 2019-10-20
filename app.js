@@ -3,6 +3,7 @@ var express = require('express');
 var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 var settings = require('./settings.js')
 
@@ -18,7 +19,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
 app.use(session({
     //secret，配置加密字符串，它会在原有的基础上再和secret的值去拼接加密

@@ -3,6 +3,7 @@ var router = express.Router();
 var crypto = require('crypto'), // NODE核心模块，加密密码
     User = require('../models/user.js')
 Post = require('../models/post.js')
+Upload = require('../models/upload')
 
 /* GET home page. */
 router.get('/auth/menu', function(req, res) { // 获取菜单
@@ -54,6 +55,12 @@ router.post('/post', (req, res) => { // 发表文章
 })
 
 router.get('/logout', (req, res) => {})
+
+router.post('/upload', (req, res) => { // 发表文章
+    Upload.save(req, res, (result) => {
+        res.send(result)
+    })
+})
 
 module.exports = function(app) {
     app.use('/', router)
