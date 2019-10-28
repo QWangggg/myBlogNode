@@ -42,8 +42,18 @@ router.post('/auth/login', (req, res) => { // 登录
 })
 
 router.get('/auth/articles', (req, res) => { // 获取文章
-    Post.get(req.cookies.username, (result) => {
+    Post.getAll(req.cookies.username, (result) => {
         res.send(result)
+    })
+})
+
+router.get('/auth/article:id', (req, res) => { // 获取单篇文章
+    Post.getOne(req.params.id, (result) => {
+        if (result.success) {
+            res.status(200).send(result)
+        } else {
+            res.send(result)
+        }
     })
 })
 
@@ -58,7 +68,11 @@ router.get('/logout', (req, res) => {})
 
 router.post('/upload', (req, res) => { // 发表文章
     Upload.save(req, res, (result) => {
-        res.send(result)
+        if (result.success) {
+            res.status(200).send(result)
+        } else {
+            res.status(100001).send(result)
+        }
     })
 })
 

@@ -51,7 +51,7 @@ User.prototype.register = function(req, callback) {
 // 保存用户信息，先校验是否存在相同用户，再注册
 User.prototype.save = function(user, callback) {
     let _this = this
-    this.get(user, function(result) {
+    User.get(user, function(result) {
         if (!result.success) { // 若不存在相同用户名，则注册
             _this.register(user, callback)
         } else { // 若是存在相同用户名，则返回错误

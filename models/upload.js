@@ -6,9 +6,9 @@ var Upload = function() {
 
 var Storage = Multer.diskStorage({
     // 设置图片存储
-    // 路径设置为字符串，不no such file or directory报错
+    // 路径设置为字符串，不设置no such file or directory报错
     // 设置为destination: function(){...path}则会报错
-    destination: '../public/uploads',
+    destination: 'public/uploads',
     filename: function(req, file, callback) {
         callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
     }
@@ -20,10 +20,9 @@ var multer = Multer({ storage: Storage }).array("image", 3); // 创建multer对�
 Upload.save = function(req, res, callback) {
     multer(req, res, function(err) {
         if (err) {
-            console.log(err)
-            return callback("Something went wrong!");
+            return callback({ success: false, errMsg: "Something went wrong!" });
         }
-        return callback("File uploaded sucessfully!.");
+        return callback({ data: req.files, success: true });
     });
 }
 

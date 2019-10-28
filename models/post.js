@@ -10,7 +10,7 @@ function Post(post) {
 module.exports = Post;
 
 Post.prototype.save = function(callback) {
-    var time = moment().format("YYYY-MM-DD HH-mm-ss")
+    var time = new Date().getTime()
     var post = {
         name: this.name,
         title: this.title,
@@ -35,7 +35,27 @@ Post.prototype.save = function(callback) {
     })
 }
 
-Post.get = function(name, callback) {
+Post.getOne = function(id, callback) {
+    mongodb(function(db) {
+        var collection = db.db('myBlog').collection('posts');
+        var query = {
+            // mongodb的主键
+            '_id': require('mongodb').ObjectId(id)
+        }
+        collection.findOne(query, function(err, result) {
+            if (err) {
+                return callback(err)
+            }
+            var data = {
+                success: true,
+                data: result
+            }
+            callback(data)
+        })
+    })
+}
+
+Post.getAll = function(name, callback) {
     mongodb(function(db) {
         var collection = db.db('myBlog').collection('posts');
         var query = {}

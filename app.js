@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use('/public', express.static('public')); //将文件设置成静态
 
 app.use(session({
     //secret，配置加密字符串，它会在原有的基础上再和secret的值去拼接加密
@@ -37,7 +38,7 @@ app.use(function(req, res, next) {
         if (req.url.indexOf('auth') > -1) {
             next()
         } else {
-            res.send({
+            res.status(501).send({
                 code: '501',
                 error: '请先登录'
             })
